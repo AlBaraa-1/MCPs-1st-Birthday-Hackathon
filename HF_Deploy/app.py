@@ -138,22 +138,25 @@ def main():
         page_title="CleanEye - AI Garbage Detection",
         page_icon="🗑️",
         layout="wide",
-        initial_sidebar_state="expanded"
+        initial_sidebar_state="auto"  # Auto-collapse sidebar on mobile
     )
     
-    # Custom CSS
+    # Custom CSS - Mobile Friendly
     st.markdown("""
         <style>
         .main-header {
-            font-size: 3rem;
+            font-size: clamp(1.5rem, 5vw, 3rem);
             color: #2E7D32;
             text-align: center;
             margin-bottom: 0;
+            padding: 0.5rem;
         }
         .sub-header {
             text-align: center;
             color: #666;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            padding: 0 1rem;
         }
         .metric-card {
             background: #f0f2f6;
@@ -165,10 +168,52 @@ def main():
             width: 100%;
             background-color: #2E7D32;
             color: white;
+            padding: 0.5rem 1rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         /* Center Streamlit tab labels */
         div[data-baseweb="tab-list"] {
             justify-content: center !important;
+        }
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .main-header {
+                font-size: 2rem;
+            }
+            .sub-header {
+                font-size: 0.85rem;
+            }
+            /* Make columns stack on mobile */
+            [data-testid="column"] {
+                width: 100% !important;
+                flex: 100% !important;
+            }
+            /* Adjust sidebar on mobile */
+            section[data-testid="stSidebar"] {
+                width: 280px;
+            }
+            /* Tabs more compact */
+            div[data-baseweb="tab-list"] button {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+            /* Better image sizing on mobile */
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        @media (max-width: 480px) {
+            .main-header {
+                font-size: 1.5rem;
+            }
+            .sub-header {
+                font-size: 0.75rem;
+            }
+            div[data-baseweb="tab-list"] button {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.5rem;
+            }
         }
         </style>
     """, unsafe_allow_html=True)
@@ -180,17 +225,11 @@ def main():
         unsafe_allow_html=True
     )
     
+    # Simple about section - centered
+    st.markdown('<p style="text-align: center; color: #666; margin-bottom: 2rem;">**YOLOv8-powered garbage detection trained on 4000+ images**</p>', unsafe_allow_html=True)
+    
     # Sidebar
     with st.sidebar:
-        st.image("https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_Logotype_Original.svg", width=200)
-        st.markdown("---")
-        
-        st.markdown("### 🎯 About CleanEye")
-        st.info(
-            "CleanEye uses YOLOv8 trained on 4000+ images to detect and classify "
-            "urban waste in real-time. Built for the **MCP 1st Birthday Hackathon**."
-        )
-        
         st.markdown("### ⚙️ Detection Settings")
         confidence = st.slider(
             "Confidence Threshold",
@@ -212,15 +251,6 @@ def main():
             st.markdown(f"- {cat}")
         
         st.markdown("---")
-        st.markdown("### 🔗 Links")
-        st.markdown("- [GitHub Repo](https://github.com/AlBaraa-1/Computer-vision)")
-        st.markdown("- [MCP Documentation](https://github.com/AlBaraa-1/Computer-vision/tree/main/CleanEye)")
-        st.markdown("- [Hackathon Info](https://huggingface.co/spaces/Gradio-Blocks/mcp-1st-birthday)")
-        
-        st.markdown("---")
-        st.markdown("**Developer:** AlBaraa AlOlabi (@AlBaraa63)")
-        st.markdown("**Track:** MCP in Action (Agents)")
-        st.markdown("---")
         st.markdown("### 🧪 Test Samples")
         st.info("Download and try these sample images:")
         sample_dir = ROOT_DIR / "test_samples"
@@ -231,12 +261,34 @@ def main():
             ("sample_4_street.jpg", "Street waste scenario"),
             ("sample_5_plastic.jpg", "Plastic waste accumulation")
         ]
+        
+        # Add custom CSS for justified buttons
+        st.markdown("""
+            <style>
+            .stDownloadButton button {
+                width: 100%;
+                text-align: left;
+                justify-content: flex-start;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+        
         for fname, desc in sample_files:
             fpath = sample_dir / fname
             if fpath.exists():
                 with open(fpath, "rb") as f:
                     btn_label = f"⬇️ {desc}"
                     st.download_button(btn_label, f.read(), file_name=fname, mime="image/jpeg")
+        
+        st.markdown("---")
+        st.markdown("### 🔗 Links")
+        st.markdown("- [GitHub Repo](https://github.com/AlBaraa-1/Computer-vision)")
+        st.markdown("- [MCP Documentation](https://github.com/AlBaraa-1/Computer-vision/tree/main/CleanEye)")
+        st.markdown("- [Hackathon Info](https://huggingface.co/spaces/Gradio-Blocks/mcp-1st-birthday)")
+        
+        st.markdown("---")
+        st.markdown("**Developer:** AlBaraa AlOlabi (@AlBaraa63)")
+        st.markdown("**Track:** MCP in Action (Agents)")
     
     # Main content
     tab1, tab2, tab3, tab4 = st.tabs(["📸 Image Detection", "🎥 Video Detection", "📊 About", "🏆 Hackathon"])
@@ -260,7 +312,7 @@ def main():
             
             with col1:
                 st.markdown("#### Original Image")
-                st.image(image_rgb, use_container_width=True)
+                st.image(image_rgb, use_column_width=True)
             
             # Run detection
             with st.spinner("🔍 Detecting garbage..."):
@@ -273,7 +325,7 @@ def main():
             with col2:
                 st.markdown("#### Detection Results")
                 annotated_rgb = cv2.cvtColor(result["image"], cv2.COLOR_BGR2RGB)
-                st.image(annotated_rgb, use_container_width=True)
+                st.image(annotated_rgb, use_column_width=True)
             
             # Display statistics
             st.markdown("---")
@@ -433,7 +485,7 @@ def main():
                         if frames_analyzed % 10 == 0:  # Update display every 10 frames
                             frame_rgb = cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB)
                             video_frame_placeholder.image(frame_rgb, caption=f"Processing frame {frames_analyzed}...", 
-                                                        use_container_width=True)
+                                                        use_column_width=True)
                         
                         # Store frames for optional video output (limit to 30 for performance)
                         if len(annotated_frames) < 30:
@@ -481,7 +533,7 @@ def main():
                             cols = st.columns(3)
                             for idx, img in enumerate(detection_samples[i:i+3]):
                                 with cols[idx]:
-                                    st.image(img, caption=f"Sample {i+idx+1}", use_container_width=True)
+                                    st.image(img, caption=f"Sample {i+idx+1}", use_column_width=True)
                     
                     # Create a short video clip if we have frames
                     if annotated_frames and len(annotated_frames) >= 10:
@@ -527,7 +579,7 @@ def main():
                                 for idx, frame in enumerate(annotated_frames):
                                     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                                     frame_placeholder.image(frame_rgb, caption=f"Frame {idx+1}/{len(annotated_frames)}", 
-                                                          use_container_width=True)
+                                                          use_column_width=True)
                                     time.sleep(0.1)  # 10 FPS
                         
                         except Exception as e:
@@ -539,7 +591,7 @@ def main():
                                 for idx, frame in enumerate(annotated_frames[i:i+3]):
                                     with cols[idx]:
                                         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                                        st.image(frame_rgb, caption=f"Frame {i+idx+1}", use_container_width=True)
+                                        st.image(frame_rgb, caption=f"Frame {i+idx+1}", use_column_width=True)
                         
                 else:
                     st.info("ℹ️ No garbage detected in this video. Try lowering the confidence threshold.")
