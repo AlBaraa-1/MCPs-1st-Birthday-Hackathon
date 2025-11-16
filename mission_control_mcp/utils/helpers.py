@@ -73,10 +73,14 @@ def summarize_text(text: str, max_length: int = 500) -> str:
         sentence = sentence.strip()
         if not sentence:
             continue
-        if len(summary) + len(sentence) <= max_length:
+        if len(summary) + len(sentence) + 2 <= max_length:  # +2 for ". "
             summary += sentence + ". "
         else:
             break
+    
+    # If no sentences fit, return truncated text
+    if not summary and text:
+        summary = text[:max_length].rsplit(' ', 1)[0] + "..."
             
     return summary.strip()
 
