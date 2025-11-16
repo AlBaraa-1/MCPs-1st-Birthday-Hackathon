@@ -1,10 +1,23 @@
+---
+tags:
+- building-mcp-track-enterprise
+- mcp
+- anthropic
+- enterprise-automation
+- gradio-hackathon
+- ai-agents
+- mcp-server
+---
+
 # 🚀 MissionControlMCP
 
 **Enterprise Automation MCP Server for Document Analysis, Data Processing & Business Intelligence**
 
 A fully functional Model Context Protocol (MCP) server providing 8 powerful enterprise automation tools for document processing, web scraping, semantic search, data visualization, and business analytics.
 
-Built for the **MCP 1st Birthday Hackathon – Winter 2025** (Track 1).
+Built for the **MCP 1st Birthday Hackathon – Winter 2025** (Track 1: Building MCP - Enterprise Category).
+
+🏆 **Hackathon Submission** | 🔧 **Track 1: Building MCP** | 🏢 **Enterprise Category**
 
 ---
 
@@ -37,6 +50,17 @@ Built for the **MCP 1st Birthday Hackathon – Winter 2025** (Track 1).
 - **🔄 File Conversion**: Convert between PDF, TXT, and CSV formats
 - **📧 Email Classification**: Classify email intents using NLP
 - **📈 KPI Generation**: Calculate business metrics and generate insights
+
+---
+
+## 🧪 Quick Test
+
+```bash
+# Test all tools with sample files
+python test_samples.py
+```
+
+**See [TESTING.md](TESTING.md) for complete testing guide with examples!**
 
 ---
 
@@ -458,15 +482,30 @@ mission_control_mcp/
 
 ---
 
-## 📝 License
+## � Documentation & Examples
 
-This project is created for the MCP 1st Birthday Hackathon – Winter 2025.
+- **[EXAMPLES.md](EXAMPLES.md)** - Real-world use cases, workflows, and ROI examples
+- **[HACKATHON_SUBMISSION.md](HACKATHON_SUBMISSION.md)** - Judge evaluation guide
+- **[VIDEO_SCRIPT.md](VIDEO_SCRIPT.md)** - Demo video script and talking points
+- **[examples/](examples/)** - Sample files for testing all tools:
+  - `sample_report.txt` - Business report for text extraction
+  - `business_data.csv` - Financial data for visualization & KPIs
+  - `sample_email_*.txt` - Email samples for intent classification
+  - `sample_documents.txt` - Documents for RAG search testing
+
+---
+
+## �📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Created for the MCP 1st Birthday Hackathon – Winter 2025.
 
 ---
 
 ## 🤝 Contributing
 
-This project was built for the hackathon, but improvements and suggestions are welcome!
+This project was built for the hackathon, but improvements and suggestions are welcome! Check out [EXAMPLES.md](EXAMPLES.md) for usage patterns and best practices.
 
 ---
 
