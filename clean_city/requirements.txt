@@ -1,6 +1,11 @@
 # CleanCity Agent - Production Dependencies
 # Python 3.11+ required
 
+# Fix for "Error: No API found" - Pydantic version compatibility issue
+# This resolves the TypeError: argument of type 'bool' is not iterable
+# that occurs during Gradio API schema generation with newer Pydantic versions
+pydantic==2.10.6
+
 # Core UI Framework
 gradio==5.9.1
 
@@ -26,7 +31,8 @@ numpy>=2.1.0
 httpx>=0.28.0
 
 # Computer Vision - YOLO for trash detection
+# Note: If using GPU/CUDA, ensure compatible torch version is installed
 ultralytics>=8.0.0
 
-# Database (SQLite is stdlib, but we'll use this for better datetime handling)
+# Database utilities for better datetime handling
 python-dateutil>=2.9.0

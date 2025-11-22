@@ -9,6 +9,7 @@ from typing import TypedDict
 from PIL import Image
 from pathlib import Path
 import numpy as np
+import os
 
 # Import YOLO from ultralytics
 try:
@@ -29,13 +30,17 @@ class Detection(TypedDict):
 # Global model instance (loaded once)
 _model = None
 
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).parent.resolve()
+DEFAULT_MODEL_PATH = SCRIPT_DIR / "Weights" / "best.pt"
 
-def load_model(model_path: str = "Weights/best.pt") -> YOLO:
+
+def load_model(model_path: str = None) -> YOLO:
     """
     Load the YOLOv8 trash detection model.
     
     Args:
-        model_path: Path to the model weights file
+        model_path: Path to the model weights file (if None, uses default)
         
     Returns:
         Loaded YOLO model instance
@@ -46,11 +51,23 @@ def load_model(model_path: str = "Weights/best.pt") -> YOLO:
         if not YOLO_AVAILABLE:
             raise ImportError("Ultralytics not installed. Run: pip install ultralytics")
         
-        model_file = Path(model_path)
-        if not model_file.exists():
-            raise FileNotFoundError(f"Model file not found: {model_path}")
+        # Use default path if none provided
+        if model_path is None:
+            model_file = DEFAULT_MODEL_PATH
+        else:
+            model_file = Path(model_path)
+            # If relative path provided, make it relative to script directory
+            if not model_file.is_absolute():
+                model_file = SCRIPT_DIR / model_file
         
-        print(f"🔄 Loading YOLO model from {model_path}...")
+        if not model_file.exists():
+            raise FileNotFoundError(
+                f"Model file not found: {model_file}\n"
+                f"Expected location: {DEFAULT_MODEL_PATH}\n"
+                f"Current directory: {os.getcwd()}"
+            )
+        
+        print(f"🔄 Loading YOLO model from {model_file}...")
         _model = YOLO(str(model_file))
         print(f"✅ Model loaded successfully!")
         print(f"   Classes: {_model.names}")
