@@ -32,6 +32,7 @@ Built for the **MCP 1st Birthday Hackathon – Winter 2025** (Tracks: Building M
 
 ## 📱 Social Media & Links
 
+- 🎬 **Demo Video:** [Watch on YouTube](https://youtube.com/shorts/sElW_r3o3Og?feature=share) ⭐ **NEW**
 - 🔗 **LinkedIn Post:** [View Announcement](https://www.linkedin.com/posts/albaraa-alolabi_mcphackathon-gradiohackathon-huggingface-activity-7395722042223886336-kp7K?utm_source=share&utm_medium=member_desktop)
 - 🚀 **Live Demo:** [Try on Hugging Face](https://huggingface.co/spaces/AlBaraa63/8_tools)
 - 💻 **GitHub Repository:** [Source Code](https://github.com/AlBaraa-1/CleanEye-Hackathon)
